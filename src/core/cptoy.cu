@@ -22,8 +22,8 @@ __global__ void kernel_fill(float val, int n, float *data)
         data[i] = val;
 }
 
-void CPToy::cuda_test(float value) {
-
+void CPToy::cuda_test(float value)
+{
     const int nthreads = 128;
     const int nblocks = (size + nthreads - 1) / nthreads;
 
@@ -32,10 +32,10 @@ void CPToy::cuda_test(float value) {
     cudaDeviceSynchronize();
 }
 
-void CPToy::mpi_test(float value) {
+void CPToy::mpi_test(float value)
+{
     int rank, root = 0;
     float sum = 0;
-
 
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Reduce(&value, &sum, 1, MPI_FLOAT, MPI_SUM, root, MPI_COMM_WORLD);
