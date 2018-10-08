@@ -7,7 +7,6 @@ endif()
 project(CPToy LANGUAGES C CXX CUDA)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(CPT "libcptoy")
-set(CPT_MAIN "cptoy_main")
 
 # Add the pybind11
 add_subdirectory(src/extern/pybind11)
@@ -53,14 +52,12 @@ file(GLOB_RECURSE SOURCES_MAIN      RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${CORE
 add_library(main_compiled OBJECT ${SOURCES_MAIN})
 set_property(TARGET main_compiled PROPERTY POSITION_INDEPENDENT_CODE 1)
 
-add_library(${CPT_MAIN} SHARED $<TARGET_OBJECTS:main_compiled>)
 add_library(${CPT} MODULE ${SOURCES_BINDINGS} $<TARGET_OBJECTS:main_compiled>)
 target_link_libraries(${CPT} PRIVATE pybind11::module)
 set_target_properties(${CPT} PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
                                         SUFFIX "${PYTHON_MODULE_EXTENSION}")
 
 target_link_libraries(${CPT} PRIVATE ${CUDA_LIBRARIES})
-target_link_libraries(${CPT_MAIN} PRIVATE ${CUDA_LIBRARIES})
 
 
 ########################################################

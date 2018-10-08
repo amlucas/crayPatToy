@@ -6,7 +6,7 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(libcptoy, m)
 {
-        py::class_<CPToy> (m, "cptoy", "cptoy class")
+        py::class_<CPToy> (m, "CPToy", "cptoy class")
             .def(py::init<int>(),
                  py::return_value_policy::take_ownership,
              "size"_a, R"(

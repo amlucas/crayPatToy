@@ -1,5 +1,5 @@
 libCPToy:
 	mkdir -p build;
-	(cd build; make ..; make -j)
+	(cd build; cmake ..; make -j)
 
 .PHONY: libCPToy
