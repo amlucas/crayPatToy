@@ -28,6 +28,8 @@ void CPToy::cuda_test(float value) {
     const int nblocks = (size + nthreads - 1) / nthreads;
 
     kernel_fill <<<nblocks, nthreads>>> (value, size, data);
+
+    cudaDeviceSynchronize();
 }
 
 void CPToy::mpi_test(float value) {
