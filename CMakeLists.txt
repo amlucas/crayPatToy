@@ -4,10 +4,10 @@ if(POLICY CMP0060)
     cmake_policy(SET CMP0060 NEW)
 endif()
 
-project(uDeviceX LANGUAGES C CXX CUDA)
+project(CPToy LANGUAGES C CXX CUDA)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-set(UDX "libudevicex")
-set(UDX_MAIN "udevicex_main")
+set(CPT "libcptoy")
+set(CPT_MAIN "cptoy_main")
 
 # Add the pybind11
 add_subdirectory(src/extern/pybind11)
@@ -47,22 +47,20 @@ set(PYTHON_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/udevicex")
 
 # Find sources
 file(GLOB_RECURSE SOURCES_BINDINGS  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${BINDINGS_DIR}/*.cpp")
-file(GLOB_RECURSE SOURCES_MAIN      RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-     "${CORE_DIR}/*.cu")
+file(GLOB_RECURSE SOURCES_MAIN      RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${CORE_DIR}/*.cu")
    
 # Define the main executable
-#add_executable(udevicex ../apps/udevicex/main.cu ${CXX_SOURCES} ${CUDA_SOURCES})
 add_library(main_compiled OBJECT ${SOURCES_MAIN})
 set_property(TARGET main_compiled PROPERTY POSITION_INDEPENDENT_CODE 1)
 
-add_library(${UDX_MAIN} SHARED $<TARGET_OBJECTS:main_compiled>)
-add_library(${UDX} MODULE ${SOURCES_BINDINGS} $<TARGET_OBJECTS:main_compiled>)
-target_link_libraries(${UDX} PRIVATE pybind11::module)
-set_target_properties(${UDX} PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
+add_library(${CPT_MAIN} SHARED $<TARGET_OBJECTS:main_compiled>)
+add_library(${CPT} MODULE ${SOURCES_BINDINGS} $<TARGET_OBJECTS:main_compiled>)
+target_link_libraries(${CPT} PRIVATE pybind11::module)
+set_target_properties(${CPT} PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
                                         SUFFIX "${PYTHON_MODULE_EXTENSION}")
 
-target_link_libraries(${UDX} PRIVATE ${CUDA_LIBRARIES})
-target_link_libraries(${UDX_MAIN} PRIVATE ${CUDA_LIBRARIES})
+target_link_libraries(${CPT} PRIVATE ${CUDA_LIBRARIES})
+target_link_libraries(${CPT_MAIN} PRIVATE ${CUDA_LIBRARIES})
 
 
 ########################################################
